@@ -91,7 +91,12 @@ class Calendar extends PureComponent {
     }
     const targetMonthIndex = differenceInCalendarMonths(date, props.minDate, this.dateOptions);
     const visibleMonths = this.list.getVisibleRange();
-    if (preventUnnecessary && visibleMonths.includes(targetMonthIndex)) return;
+    if (
+      preventUnnecessary &&
+      targetMonthIndex >= visibleMonths[0] &&
+      targetMonthIndex <= visibleMonths[1]
+    )
+      return;
     this.isFirstRender = true;
     this.list.scrollTo(targetMonthIndex);
     this.setState({ focusedDate: date });
@@ -493,7 +498,7 @@ class Calendar extends PureComponent {
               isVertical ? this.styles.monthsVertical : this.styles.monthsHorizontal
             )}>
             {new Array(this.props.months).fill(null).map((_, i) => {
-              let monthStep = addMonths(this.state.focusedDate, i);;
+              let monthStep = addMonths(this.state.focusedDate, i);
               if (this.props.calendarFocus === 'backwards') {
                 monthStep = subMonths(this.state.focusedDate, this.props.months - 1 - i);
               }
